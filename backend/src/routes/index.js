@@ -8,6 +8,8 @@ const userRoutes = require('./users');
 const webhookRoutes = require('./webhooks');
 const vocabularyRoutes = require('./vocabulary');
 const adminRoutes = require('./admin');
+const integrationRoutes = require('./integrations');
+const workflowRoutes = require('./workflows');
 
 /**
  * @swagger
@@ -111,7 +113,9 @@ router.get('/', (req, res) => {
       users: '/api/users',
       webhooks: '/api/webhooks',
       vocabulary: '/api/vocabulary',
-      admin: '/api/admin'
+      admin: '/api/admin',
+      integrations: '/api/integrations',
+      workflows: '/api/workflows'
     }
   });
 });
@@ -123,5 +127,7 @@ router.use('/users', userRoutes);
 router.use('/webhooks', webhookRoutes);
 router.use('/vocabulary', vocabularyRoutes);
 router.use('/admin', adminRoutes);
+router.use('/integrations', integrationRoutes);
+router.use('/workflows', workflowRoutes);
 
 module.exports = router;
