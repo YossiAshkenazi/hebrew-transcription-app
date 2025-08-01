@@ -12,6 +12,21 @@ export interface User {
   settings?: any;
   createdAt: string;
   updatedAt: string;
+  
+  // Security fields (added by Agent 3)
+  failedLoginAttempts?: number;
+  lastFailedLoginAt?: string;
+  lockedUntil?: string;
+  mfaEnabled?: boolean;
+  securitySettings?: any;
+  privacySettings?: any;
+  phoneNumber?: string;
+  phoneVerified?: boolean;
+  activeSessions?: any[];
+  lastPasswordChange?: string;
+  lastSecurityUpdate?: string;
+  riskScore?: number;
+  riskFactors?: any[];
 }
 
 export interface AuthResponse {
@@ -74,13 +89,26 @@ export interface WebhookConfig {
   updatedAt: string;
 }
 
+export interface CustomVocabulary {
+  id: string;
+  word: string;
+  pronunciation?: string;
+  category: 'halachic' | 'chassidic' | 'yiddish' | 'calendar' | 'names' | 'places' | 'general';
+  frequency: number;
+  isGlobal: boolean;
+  isActive: boolean;
+  metadata?: any;
+  createdAt: string;
+  updatedAt: string;
+}
+
 class ApiService {
   private client: AxiosInstance;
   private token: string | null = null;
 
   constructor() {
     this.client = axios.create({
-      baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001',
+      baseURL: process.env.REACT_APP_API_URL || '/api',
       timeout: 30000,
       headers: {
         'Content-Type': 'application/json',
@@ -351,6 +379,81 @@ class ApiService {
 
   async getWebhookStats(): Promise<{ success: boolean; data: { stats: any } }> {
     const response = await this.client.get('/webhooks/stats');
+    return response.data;
+  }
+
+  // Vocabulary endpoints
+  async getVocabulary(params?: {
+    category?: string;
+    includeGlobal?: boolean;
+  }): Promise<{ success: boolean; data: { vocabulary: CustomVocabulary[] } }> {
+    const response = await this.client.get('/vocabulary', { params });
+    return response.data;
+  }
+
+  async getVocabularyWord(id: string): Promise<{ success: boolean; data: { vocabularyWord: CustomVocabulary } }> {
+    const response = await this.client.get(`/vocabulary/${id}`);
+    return response.data;
+  }
+
+  async createVocabularyWord(data: {
+    word: string;
+    pronunciation?: string;
+    category?: string;
+    metadata?: any;
+  }): Promise<{ success: boolean; data: { vocabularyWord: CustomVocabulary } }> {
+    const response = await this.client.post('/vocabulary', data);
+    return response.data;
+  }
+
+  async updateVocabularyWord(
+    id: string,
+    data: {
+      word?: string;
+      pronunciation?: string;
+      category?: string;
+      metadata?: any;
+    }
+  ): Promise<{ success: boolean; data: { vocabularyWord: CustomVocabulary } }> {
+    const response = await this.client.put(`/vocabulary/${id}`, data);
+    return response.data;
+  }
+
+  async deleteVocabularyWord(id: string): Promise<{ success: boolean; message: string }> {
+    const response = await this.client.delete(`/vocabulary/${id}`);
+    return response.data;
+  }
+
+  async getGlobalVocabulary(): Promise<{ success: boolean; data: { vocabulary: CustomVocabulary[] } }> {
+    const response = await this.client.get('/vocabulary/global');
+    return response.data;
+  }
+
+  async bulkCreateVocabulary(data: {
+    words: Array<{
+      word: string;
+      pronunciation?: string;
+      category?: string;
+      metadata?: any;
+    }>;
+  }): Promise<{ success: boolean; data: { results: any } }> {
+    const response = await this.client.post('/vocabulary/bulk', data);
+    return response.data;
+  }
+
+  // Admin endpoints (basic implementation)
+  async getAdminStats(): Promise<{ success: boolean; data: { stats: any } }> {
+    const response = await this.client.get('/admin/stats');
+    return response.data;
+  }
+
+  async getAdminHealth(): Promise<{ success: boolean; data: any }> {
+    const response = await this.client.get('/admin/health');
+    return response.data;
+  }
+
+  async triggerCleanup(): Promise<{ success: boolean; data: any }> {
+    const response = await this.client.post('/admin/cleanup');
     return response.data;
   }
 }

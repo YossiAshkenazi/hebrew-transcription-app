@@ -18,6 +18,7 @@ import TranscriptionDetail from './pages/transcriptions/TranscriptionDetail';
 import Profile from './pages/user/Profile';
 import Settings from './pages/user/Settings';
 import WebhookList from './pages/webhooks/WebhookList';
+import VocabularyList from './pages/vocabulary/VocabularyList';
 
 const theme = createTheme({
   palette: {
@@ -140,6 +141,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <WebhookList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/vocabulary"
+                element={
+                  <ProtectedRoute>
+                    <VocabularyList />
                   </ProtectedRoute>
                 }
               />
