@@ -11,8 +11,6 @@
       "Bash(ls:*)",
       "Bash(curl:*)",
       "Bash(git checkout:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(git pull:*)",
       "Bash(git fetch:*)",
@@ -25,7 +23,16 @@
       "Bash(cp:*)",
       "Bash(mv:*)",
       "Bash(npx create-react-app:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(find:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run type-check:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm test)",
+      "Bash(npm:*)",
+      "Bash(node:*)"
     ],
     "deny": [
       "Bash(rmdir:*)",

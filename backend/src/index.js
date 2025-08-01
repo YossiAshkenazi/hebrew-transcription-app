@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const { createServer } = require('http');
 require('dotenv').config();
 
 const logger = require('./utils/logger');
@@ -11,8 +12,11 @@ const { connectRedis } = require('./config/redis');
 const routes = require('./routes');
 const errorHandler = require('./middleware/errorHandler');
 const { initializeQueues } = require('./queues');
+const realtimeService = require('./services/realtimeService');
+const advancedWebhookService = require('./services/advancedWebhookService');
 
 const app = express();
+const server = createServer(app);
 const PORT = process.env.PORT || 3001;
 
 // Middleware
@@ -74,11 +78,21 @@ async function startServer() {
     await initializeQueues();
     logger.info('Job queues initialized');
 
+    // Initialize advanced webhook service
+    await advancedWebhookService.initialize();
+    logger.info('Advanced webhook service initialized');
+
+    // Initialize real-time service with WebSocket
+    realtimeService.initialize(server);
+    logger.info('Real-time service with WebSocket initialized');
+
     // Start server
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       logger.info(`🚀 Server running on port ${PORT}`);
       logger.info(`📝 Hebrew Transcription API ready`);
       logger.info(`🔗 Health check: http://localhost:${PORT}/health`);
+      logger.info(`⚡ WebSocket real-time features enabled`);
+      logger.info(`🎯 Advanced integrations and workflows active`);
     });
   } catch (error) {
     logger.error('Failed to start server:', error);
@@ -89,11 +103,13 @@ async function startServer() {
 // Graceful shutdown
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received, shutting down gracefully');
+  realtimeService.shutdown();
   process.exit(0);
 });
 
 process.on('SIGINT', () => {
   logger.info('SIGINT received, shutting down gracefully');
+  realtimeService.shutdown();
   process.exit(0);
 });
 
