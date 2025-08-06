@@ -41,13 +41,11 @@ const TranscriptionUpload: React.FC = () => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string>('');
 
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -259,13 +257,6 @@ const TranscriptionUpload: React.FC = () => {
             </Button>
           </Box>
 
-          {uploadProgress > 0 && uploadProgress < 100 && (
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="body2" color="textSecondary" align="center">
-                מתקדמת העלאה: {uploadProgress}%
-              </Typography>
-            </Box>
-          )}
         </Box>
       </Paper>
 

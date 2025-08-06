@@ -304,38 +304,38 @@ class WorkflowService {
     const { step, variables, previousResults } = stepData;
 
     switch (step.type) {
-      case 'transcribe':
-        return await this.executeTranscribeStep(step, variables);
+    case 'transcribe':
+      return await this.executeTranscribeStep(step, variables);
       
-      case 'batch_process':
-        return await this.executeBatchProcessStep(step, variables);
+    case 'batch_process':
+      return await this.executeBatchProcessStep(step, variables);
       
-      case 'classify':
-        return await this.executeClassifyStep(step, variables);
+    case 'classify':
+      return await this.executeClassifyStep(step, variables);
       
-      case 'route':
-        return await this.executeRouteStep(step, variables);
+    case 'route':
+      return await this.executeRouteStep(step, variables);
       
-      case 'export':
-        return await this.executeExportStep(step, variables);
+    case 'export':
+      return await this.executeExportStep(step, variables);
       
-      case 'webhook':
-        return await this.executeWebhookStep(step, variables);
+    case 'webhook':
+      return await this.executeWebhookStep(step, variables);
       
-      case 'condition':
-        return await this.executeConditionStep(step, variables);
+    case 'condition':
+      return await this.executeConditionStep(step, variables);
       
-      case 'transform':
-        return await this.executeTransformStep(step, variables, previousResults);
+    case 'transform':
+      return await this.executeTransformStep(step, variables, previousResults);
       
-      case 'delay':
-        return await this.executeDelayStep(step, variables);
+    case 'delay':
+      return await this.executeDelayStep(step, variables);
       
-      case 'custom':
-        return await this.executeCustomStep(step, variables);
+    case 'custom':
+      return await this.executeCustomStep(step, variables);
       
-      default:
-        throw new Error(`Unknown workflow step type: ${step.type}`);
+    default:
+      throw new Error(`Unknown workflow step type: ${step.type}`);
     }
   }
 
@@ -588,20 +588,20 @@ class WorkflowService {
         const sourceValue = this.resolveVariables(source, { ...variables, ...previousResults });
         
         switch (operation) {
-          case 'format':
-            transformed[target] = this.formatValue(sourceValue, parameters);
-            break;
-          case 'extract':
-            transformed[target] = this.extractValue(sourceValue, parameters);
-            break;
-          case 'calculate':
-            transformed[target] = this.calculateValue(sourceValue, parameters);
-            break;
-          case 'combine':
-            transformed[target] = this.combineValues(sourceValue, parameters, variables);
-            break;
-          default:
-            transformed[target] = sourceValue;
+        case 'format':
+          transformed[target] = this.formatValue(sourceValue, parameters);
+          break;
+        case 'extract':
+          transformed[target] = this.extractValue(sourceValue, parameters);
+          break;
+        case 'calculate':
+          transformed[target] = this.calculateValue(sourceValue, parameters);
+          break;
+        case 'combine':
+          transformed[target] = this.combineValues(sourceValue, parameters, variables);
+          break;
+        default:
+          transformed[target] = sourceValue;
         }
       }
 
@@ -691,14 +691,14 @@ class WorkflowService {
    */
   formatValue(value, parameters) {
     switch (parameters.type) {
-      case 'date':
-        return moment(value).format(parameters.format || 'YYYY-MM-DD HH:mm:ss');
-      case 'number':
-        return Number(value).toFixed(parameters.decimals || 0);
-      case 'string':
-        return String(value).substring(0, parameters.maxLength || 255);
-      default:
-        return value;
+    case 'date':
+      return moment(value).format(parameters.format || 'YYYY-MM-DD HH:mm:ss');
+    case 'number':
+      return Number(value).toFixed(parameters.decimals || 0);
+    case 'string':
+      return String(value).substring(0, parameters.maxLength || 255);
+    default:
+      return value;
     }
   }
 
@@ -723,14 +723,14 @@ class WorkflowService {
    */
   calculateValue(value, parameters) {
     switch (parameters.operation) {
-      case 'length':
-        return String(value).length;
-      case 'wordcount':
-        return String(value).split(/\s+/).length;
-      case 'duration':
-        return moment(parameters.endTime).diff(moment(value), parameters.unit || 'seconds');
-      default:
-        return value;
+    case 'length':
+      return String(value).length;
+    case 'wordcount':
+      return String(value).split(/\s+/).length;
+    case 'duration':
+      return moment(parameters.endTime).diff(moment(value), parameters.unit || 'seconds');
+    default:
+      return value;
     }
   }
 
@@ -800,18 +800,18 @@ class WorkflowService {
   async setupWorkflowTriggers(workflow) {
     for (const trigger of workflow.triggers) {
       switch (trigger.type) {
-        case 'schedule':
-          await this.setupScheduleTrigger(workflow, trigger);
-          break;
-        case 'webhook':
-          await this.setupWebhookTrigger(workflow, trigger);
-          break;
-        case 'file_upload':
-          await this.setupFileUploadTrigger(workflow, trigger);
-          break;
-        case 'transcription_complete':
-          await this.setupTranscriptionCompleteTrigger(workflow, trigger);
-          break;
+      case 'schedule':
+        await this.setupScheduleTrigger(workflow, trigger);
+        break;
+      case 'webhook':
+        await this.setupWebhookTrigger(workflow, trigger);
+        break;
+      case 'file_upload':
+        await this.setupFileUploadTrigger(workflow, trigger);
+        break;
+      case 'transcription_complete':
+        await this.setupTranscriptionCompleteTrigger(workflow, trigger);
+        break;
       }
     }
   }
@@ -1052,7 +1052,7 @@ class WorkflowService {
     const executions = workflows.flatMap(w => w.state.history)
       .filter(h => h.startTime && h.endTime);
 
-    if (executions.length === 0) return 0;
+    if (executions.length === 0) {return 0;}
 
     const totalTime = executions.reduce((sum, e) => sum + (e.endTime - e.startTime), 0);
     return Math.round(totalTime / executions.length);
@@ -1064,18 +1064,18 @@ class WorkflowService {
   getCutoffTime(timeRange) {
     const now = new Date();
     switch (timeRange) {
-      case '1h':
-        return new Date(now.getTime() - 60 * 60 * 1000);
-      case '6h':
-        return new Date(now.getTime() - 6 * 60 * 60 * 1000);
-      case '24h':
-        return new Date(now.getTime() - 24 * 60 * 60 * 1000);
-      case '7d':
-        return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-      case '30d':
-        return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-      default:
-        return new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    case '1h':
+      return new Date(now.getTime() - 60 * 60 * 1000);
+    case '6h':
+      return new Date(now.getTime() - 6 * 60 * 60 * 1000);
+    case '24h':
+      return new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    case '7d':
+      return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    case '30d':
+      return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    default:
+      return new Date(now.getTime() - 24 * 60 * 60 * 1000);
     }
   }
 }
@@ -1108,39 +1108,39 @@ class WorkflowRulesEngine {
     const fieldValue = this.getNestedValue(variables, field);
 
     switch (operator) {
-      case 'equals':
-        return fieldValue === value;
-      case 'not_equals':
-        return fieldValue !== value;
-      case 'contains':
-        return typeof fieldValue === 'string' && fieldValue.includes(value);
-      case 'not_contains':
-        return typeof fieldValue === 'string' && !fieldValue.includes(value);
-      case 'greater_than':
-        return Number(fieldValue) > Number(value);
-      case 'less_than':
-        return Number(fieldValue) < Number(value);
-      case 'greater_equal':
-        return Number(fieldValue) >= Number(value);
-      case 'less_equal':
-        return Number(fieldValue) <= Number(value);
-      case 'in':
-        return Array.isArray(value) && value.includes(fieldValue);
-      case 'not_in':
-        return Array.isArray(value) && !value.includes(fieldValue);
-      case 'exists':
-        return fieldValue !== undefined && fieldValue !== null;
-      case 'not_exists':
-        return fieldValue === undefined || fieldValue === null;
-      case 'regex':
-        try {
-          const regex = new RegExp(value);
-          return regex.test(String(fieldValue));
-        } catch (error) {
-          return false;
-        }
-      default:
-        return true;
+    case 'equals':
+      return fieldValue === value;
+    case 'not_equals':
+      return fieldValue !== value;
+    case 'contains':
+      return typeof fieldValue === 'string' && fieldValue.includes(value);
+    case 'not_contains':
+      return typeof fieldValue === 'string' && !fieldValue.includes(value);
+    case 'greater_than':
+      return Number(fieldValue) > Number(value);
+    case 'less_than':
+      return Number(fieldValue) < Number(value);
+    case 'greater_equal':
+      return Number(fieldValue) >= Number(value);
+    case 'less_equal':
+      return Number(fieldValue) <= Number(value);
+    case 'in':
+      return Array.isArray(value) && value.includes(fieldValue);
+    case 'not_in':
+      return Array.isArray(value) && !value.includes(fieldValue);
+    case 'exists':
+      return fieldValue !== undefined && fieldValue !== null;
+    case 'not_exists':
+      return fieldValue === undefined || fieldValue === null;
+    case 'regex':
+      try {
+        const regex = new RegExp(value);
+        return regex.test(String(fieldValue));
+      } catch (error) {
+        return false;
+      }
+    default:
+      return true;
     }
   }
 

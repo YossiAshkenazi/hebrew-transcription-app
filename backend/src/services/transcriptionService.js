@@ -175,7 +175,7 @@ class TranscriptionService {
   }
 
   calculateAverageConfidence(segments) {
-    if (!segments || segments.length === 0) return null;
+    if (!segments || segments.length === 0) {return null;}
     
     const totalConfidence = segments.reduce((sum, segment) => {
       return sum + (segment.avg_logprob || 0);

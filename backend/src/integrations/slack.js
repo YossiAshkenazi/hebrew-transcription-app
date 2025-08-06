@@ -96,7 +96,7 @@ class SlackIntegration extends BaseIntegration {
         messageId: response.data?.ts || null
       };
     } catch (error) {
-      logger.error(`Failed to send Slack notification:`, error);
+      logger.error('Failed to send Slack notification:', error);
       throw error;
     }
   }
@@ -134,7 +134,7 @@ class SlackIntegration extends BaseIntegration {
           },
           {
             type: 'mrkdwn',
-            text: `*Language:* Hebrew`
+            text: '*Language:* Hebrew'
           }
         ]
       }
@@ -211,7 +211,7 @@ class SlackIntegration extends BaseIntegration {
         messageId: response.data?.ts || null
       };
     } catch (error) {
-      logger.error(`Failed to send custom Slack message:`, error);
+      logger.error('Failed to send custom Slack message:', error);
       throw error;
     }
   }

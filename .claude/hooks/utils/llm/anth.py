@@ -2,19 +2,23 @@
 # /// script
 # requires-python = ">=3.8"
 # dependencies = [
-#     "anthropic",
 #     "python-dotenv",
 # ]
 # ///
 
 import os
 import sys
+import json
+import urllib.request
+import urllib.error
 from dotenv import load_dotenv
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from server_discovery import get_api_endpoint
 
 
 def prompt_llm(prompt_text):
     """
-    Base Anthropic LLM prompting method using fastest model.
+    Base Anthropic LLM prompting method using centralized server.
 
     Args:
         prompt_text (str): The prompt to send to the model
@@ -24,24 +28,40 @@ def prompt_llm(prompt_text):
     """
     load_dotenv()
 
-    api_key = os.getenv("ANTHROPIC_API_KEY")
-    if not api_key:
+    # Auto-discover server URL with Docker fallback
+    api_url = get_api_endpoint('/api/llm/anthropic')
+    if not api_url:
         return None
-
+    
     try:
-        import anthropic
-
-        client = anthropic.Anthropic(api_key=api_key)
-
-        message = client.messages.create(
-            model="claude-3-5-haiku-20241022",  # Fastest Anthropic model
-            max_tokens=100,
-            temperature=0.7,
-            messages=[{"role": "user", "content": prompt_text}],
+        # Prepare request data for Anthropic API
+        request_data = {
+            "model": "claude-3-5-haiku-20241022",  # Fastest Anthropic model
+            "max_tokens": 100,
+            "temperature": 0.7,
+            "messages": [{"role": "user", "content": prompt_text}]
+        }
+        
+        # Send request to centralized server
+        req = urllib.request.Request(
+            api_url,
+            data=json.dumps(request_data).encode('utf-8'),
+            headers={
+                'Content-Type': 'application/json',
+                'User-Agent': 'Claude-Code-Hook/1.0'
+            }
         )
-
-        return message.content[0].text.strip()
-
+        
+        with urllib.request.urlopen(req, timeout=30) as response:
+            result = json.loads(response.read().decode('utf-8'))
+            
+            if result.get('success') and result.get('data'):
+                content = result['data'].get('content', [])
+                if content and len(content) > 0:
+                    return content[0].get('text', '').strip()
+            
+            return None
+            
     except Exception:
         return None
 

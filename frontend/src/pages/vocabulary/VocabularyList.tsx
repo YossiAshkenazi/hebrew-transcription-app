@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Typography,
@@ -75,11 +75,7 @@ const VocabularyList: React.FC = () => {
     },
   });
 
-  useEffect(() => {
-    loadVocabulary();
-  }, [currentTab]);
-
-  const loadVocabulary = async () => {
+  const loadVocabulary = useCallback(async () => {
     try {
       setIsLoading(true);
       const includeGlobal = currentTab === 1;
@@ -94,7 +90,11 @@ const VocabularyList: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentTab]);
+
+  useEffect(() => {
+    loadVocabulary();
+  }, [loadVocabulary]);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, word: CustomVocabulary) => {
     setAnchorEl(event.currentTarget);

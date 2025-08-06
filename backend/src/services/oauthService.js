@@ -177,28 +177,28 @@ class OAuthService {
     };
 
     switch (provider) {
-      case 'google':
-        return {
-          ...baseData,
-          firstName: profile.name?.givenName || profile._json?.given_name || 'Unknown',
-          lastName: profile.name?.familyName || profile._json?.family_name || 'User',
-          picture: profile.photos?.[0]?.value || profile._json?.picture,
-          emailVerified: profile._json?.email_verified || false,
-          locale: profile._json?.locale
-        };
+    case 'google':
+      return {
+        ...baseData,
+        firstName: profile.name?.givenName || profile._json?.given_name || 'Unknown',
+        lastName: profile.name?.familyName || profile._json?.family_name || 'User',
+        picture: profile.photos?.[0]?.value || profile._json?.picture,
+        emailVerified: profile._json?.email_verified || false,
+        locale: profile._json?.locale
+      };
 
-      case 'microsoft':
-        return {
-          ...baseData,
-          firstName: profile.name?.givenName || profile._json?.givenName || 'Unknown',
-          lastName: profile.name?.familyName || profile._json?.surname || 'User',
-          picture: profile.photos?.[0]?.value,
-          emailVerified: true, // Microsoft emails are generally verified
-          locale: profile._json?.preferredLanguage
-        };
+    case 'microsoft':
+      return {
+        ...baseData,
+        firstName: profile.name?.givenName || profile._json?.givenName || 'Unknown',
+        lastName: profile.name?.familyName || profile._json?.surname || 'User',
+        picture: profile.photos?.[0]?.value,
+        emailVerified: true, // Microsoft emails are generally verified
+        locale: profile._json?.preferredLanguage
+      };
 
-      default:
-        return baseData;
+    default:
+      return baseData;
     }
   }
 
@@ -361,14 +361,14 @@ class OAuthService {
       let newTokens;
 
       switch (provider) {
-        case 'google':
-          newTokens = await this.refreshGoogleTokens(refreshToken);
-          break;
-        case 'microsoft':
-          newTokens = await this.refreshMicrosoftTokens(refreshToken);
-          break;
-        default:
-          throw new Error('Unsupported OAuth provider');
+      case 'google':
+        newTokens = await this.refreshGoogleTokens(refreshToken);
+        break;
+      case 'microsoft':
+        newTokens = await this.refreshMicrosoftTokens(refreshToken);
+        break;
+      default:
+        throw new Error('Unsupported OAuth provider');
       }
 
       // Update tokens in user record
@@ -453,7 +453,7 @@ class OAuthService {
   // Encrypt OAuth tokens for storage
   encryptToken(token) {
     try {
-      if (!token) return null;
+      if (!token) {return null;}
       
       const { encryptionService } = require('../utils/encryption');
       const encrypted = encryptionService.encrypt(token);
@@ -467,7 +467,7 @@ class OAuthService {
   // Decrypt OAuth tokens
   decryptToken(encryptedToken) {
     try {
-      if (!encryptedToken) return null;
+      if (!encryptedToken) {return null;}
       
       const { encryptionService } = require('../utils/encryption');
       const decrypted = encryptionService.decrypt({ encrypted: encryptedToken });

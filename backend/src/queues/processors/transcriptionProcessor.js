@@ -138,7 +138,7 @@ class TranscriptionProcessor {
           }
         }
       } catch (updateError) {
-        logger.error(`Failed to update transcription record after error:`, updateError);
+        logger.error('Failed to update transcription record after error:', updateError);
       }
       
       throw error;

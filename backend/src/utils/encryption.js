@@ -232,7 +232,7 @@ class EncryptionService {
         originalEnd.call(this, chunk, encoding, () => {
           const tag = this.getAuthTag();
           this._encryptionMetadata.tag = tag.toString('base64');
-          if (callback) callback();
+          if (callback) {callback();}
         });
       };
       
@@ -381,7 +381,7 @@ class EncryptionService {
   // Encrypt sensitive data for database storage
   encryptForDatabase(data) {
     try {
-      if (!data) return null;
+      if (!data) {return null;}
       
       const encrypted = this.encrypt(JSON.stringify(data));
       return encrypted.encrypted; // Return only the encrypted string for database
@@ -394,7 +394,7 @@ class EncryptionService {
   // Decrypt sensitive data from database
   decryptFromDatabase(encryptedData) {
     try {
-      if (!encryptedData) return null;
+      if (!encryptedData) {return null;}
       
       const decrypted = this.decrypt({ encrypted: encryptedData });
       return JSON.parse(decrypted.toString('utf8'));

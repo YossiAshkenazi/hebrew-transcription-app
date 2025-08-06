@@ -1,7 +1,6 @@
 /// <reference types="react-scripts" />
 
 declare module 'react-dropzone' {
-  import { ReactNode } from 'react';
 
   export interface DropzoneOptions {
     onDrop?: (acceptedFiles: File[], rejectedFiles: File[]) => void;

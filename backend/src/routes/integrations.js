@@ -114,8 +114,8 @@ router.get('/:service',
       const status = await integration.getStatus();
       const configTemplate = integration.getConfigTemplate();
       const templates = service === 'slack' ? SlackIntegration.getWebhookTemplates() :
-                       service === 'teams' ? TeamsIntegration.getWebhookTemplates() :
-                       service === 'discord' ? DiscordIntegration.getWebhookTemplates() : {};
+        service === 'teams' ? TeamsIntegration.getWebhookTemplates() :
+          service === 'discord' ? DiscordIntegration.getWebhookTemplates() : {};
 
       res.json({
         success: true,

@@ -96,7 +96,7 @@ class TemplateEngine {
       max: (...args) => Math.max(...args.filter(arg => typeof arg === 'number')),
       sum: (arr) => Array.isArray(arr) ? arr.reduce((sum, val) => sum + (Number(val) || 0), 0) : 0,
       average: (arr) => {
-        if (!Array.isArray(arr) || arr.length === 0) return 0;
+        if (!Array.isArray(arr) || arr.length === 0) {return 0;}
         const sum = arr.reduce((total, val) => total + (Number(val) || 0), 0);
         return sum / arr.length;
       }
@@ -135,7 +135,7 @@ class TemplateEngine {
       
       // Array filters
       sort: (arr, key) => {
-        if (!Array.isArray(arr)) return arr;
+        if (!Array.isArray(arr)) {return arr;}
         return arr.sort((a, b) => {
           const aVal = key ? a[key] : a;
           const bVal = key ? b[key] : b;
@@ -402,43 +402,43 @@ class TemplateEngine {
     for (const instruction of compiled.instructions) {
       try {
         switch (instruction.type) {
-          case 'literal':
-            result += instruction.value;
-            break;
+        case 'literal':
+          result += instruction.value;
+          break;
 
-          case 'variable':
-            const value = this.resolveVariable(instruction.expression, data);
-            result += this.applyFilters(value, instruction.expression);
-            break;
+        case 'variable':
+          const value = this.resolveVariable(instruction.expression, data);
+          result += this.applyFilters(value, instruction.expression);
+          break;
 
-          case 'function':
-            const funcResult = await this.executeFunction(instruction.match, data);
-            result += String(funcResult || '');
-            break;
+        case 'function':
+          const funcResult = await this.executeFunction(instruction.match, data);
+          result += String(funcResult || '');
+          break;
 
-          case 'conditional':
-            const conditionResult = await this.executeConditional(instruction, data, options);
-            result += conditionResult;
-            break;
+        case 'conditional':
+          const conditionResult = await this.executeConditional(instruction, data, options);
+          result += conditionResult;
+          break;
 
-          case 'loop':
-            const loopResult = await this.executeLoop(instruction, data, options);
-            result += loopResult;
-            break;
+        case 'loop':
+          const loopResult = await this.executeLoop(instruction, data, options);
+          result += loopResult;
+          break;
 
-          case 'partial':
-            const partialResult = await this.executePartial(instruction.expression, data, options);
-            result += partialResult;
-            break;
+        case 'partial':
+          const partialResult = await this.executePartial(instruction.expression, data, options);
+          result += partialResult;
+          break;
 
-          default:
-            logger.warn(`Unknown instruction type: ${instruction.type}`);
+        default:
+          logger.warn(`Unknown instruction type: ${instruction.type}`);
         }
       } catch (error) {
         if (options.strict) {
           throw error;
         }
-        logger.warn(`Template instruction failed:`, error);
+        logger.warn('Template instruction failed:', error);
         result += options.errorPlaceholder || `[ERROR: ${error.message}]`;
       }
     }
@@ -603,7 +603,7 @@ class TemplateEngine {
   parseArgument(arg, data) {
     // String literal
     if ((arg.startsWith('"') && arg.endsWith('"')) || 
-        (arg.startsWith("'") && arg.endsWith("'"))) {
+        (arg.startsWith('\'') && arg.endsWith('\''))) {
       return arg.slice(1, -1);
     }
 
@@ -613,10 +613,10 @@ class TemplateEngine {
     }
 
     // Boolean literal
-    if (arg === 'true') return true;
-    if (arg === 'false') return false;
-    if (arg === 'null') return null;
-    if (arg === 'undefined') return undefined;
+    if (arg === 'true') {return true;}
+    if (arg === 'false') {return false;}
+    if (arg === 'null') {return null;}
+    if (arg === 'undefined') {return undefined;}
 
     // Variable reference
     return this.getNestedValue(data, arg);
@@ -626,7 +626,7 @@ class TemplateEngine {
    * Get nested value from object using dot notation
    */
   getNestedValue(obj, path) {
-    if (!path || !obj) return obj;
+    if (!path || !obj) {return obj;}
     
     return path.split('.').reduce((current, key) => {
       return current && current[key] !== undefined ? current[key] : undefined;

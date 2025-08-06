@@ -101,7 +101,7 @@ class TeamsIntegration extends BaseIntegration {
         messageId: response.data?.id || null
       };
     } catch (error) {
-      logger.error(`Failed to send Teams notification:`, error);
+      logger.error('Failed to send Teams notification:', error);
       throw error;
     }
   }
@@ -229,7 +229,7 @@ class TeamsIntegration extends BaseIntegration {
         messageId: response.data?.id || null
       };
     } catch (error) {
-      logger.error(`Failed to send custom Teams message:`, error);
+      logger.error('Failed to send custom Teams message:', error);
       throw error;
     }
   }
@@ -271,7 +271,7 @@ class TeamsIntegration extends BaseIntegration {
         messageId: response.data?.id || null
       };
     } catch (error) {
-      logger.error(`Failed to send rich Teams message:`, error);
+      logger.error('Failed to send rich Teams message:', error);
       throw error;
     }
   }

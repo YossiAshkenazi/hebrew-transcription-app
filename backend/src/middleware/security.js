@@ -297,7 +297,7 @@ const fileUploadSecurity = (req, res, next) => {
     const files = req.files || [req.file];
     
     for (const file of files) {
-      if (!file) continue;
+      if (!file) {continue;}
 
       // Check file size
       if (file.size > securityConfig.fileUpload.maxSize) {
@@ -354,7 +354,7 @@ const fileUploadSecurity = (req, res, next) => {
 const corsOptions = {
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, etc.)
-    if (!origin) return callback(null, true);
+    if (!origin) {return callback(null, true);}
     
     // Check if origin is allowed
     if (securityConfig.cors.origin === true || securityConfig.cors.origin.includes(origin)) {

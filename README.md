@@ -1,86 +1,37 @@
-# Hebrew Call Transcription App
+# Integration Template
 
-A web application for transcribing Hebrew call recordings with specialized focus on Jewish religious terminology and concepts.
+This folder contains the template files needed to integrate other Claude Code projects with the Multi-Agent Observability System.
+
+## Contents
+
+- `.claude/` - Claude Code hooks configuration and scripts
+- `.env.sample` - Environment variables template
+
+## Quick Integration Steps
+
+1. **Copy these files to your project:**
+   ```bash
+   # Copy to your project root
+   cp -R integration/.claude /path/to/your/project/
+   cp integration/.env.sample /path/to/your/project/
+   ```
+
+2. **Configure your project:**
+   ```bash
+   # Rename and edit environment file
+   mv .env.sample .env
+   # Edit .env and set APP_NAME=your-project-name
+   ```
+
+3. **Start observability server** (from this repository)
+
+4. **Use Claude Code** in your project - events will automatically appear in the dashboard!
 
 ## Features
 
-- 🎵 Support for multiple audio formats (MP3, WAV, M4A, AAC, FLAC)
-- 🇮🇱 Hebrew language transcription with Jewish terminology
-- 👥 Multi-speaker detection and identification
-- 📧 Email delivery of transcripts
-- 🔗 Webhook support for integrations
-- 📱 Mobile-friendly responsive design
-- 🔒 GDPR-compliant privacy and security
+- ✅ **No API keys needed** - All AI calls proxied through observability server
+- ✅ **Docker support** - Automatic fallback to `host.docker.internal:4000`
+- ✅ **Environment-based config** - Set `APP_NAME` in `.env`
+- ✅ **Real-time monitoring** - Events appear instantly in dashboard
 
-## Tech Stack
-
-- **Frontend**: React.js with TypeScript
-- **Backend**: Node.js with Express
-- **Database**: PostgreSQL
-- **File Storage**: AWS S3
-- **Queue System**: Redis with Bull
-- **Transcription**: OpenAI Whisper API
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- PostgreSQL 13+
-- Redis
-- AWS Account (for S3)
-- OpenAI API Key
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/YossiAshkenazi/hebrew-transcription-app.git
-cd hebrew-transcription-app
-```
-
-2. Install backend dependencies:
-```bash
-cd backend
-npm install
-```
-
-3. Install frontend dependencies:
-```bash
-cd ../frontend
-npm install
-```
-
-4. Set up environment variables (see `.env.example` files)
-
-5. Start the development servers:
-```bash
-# Terminal 1 - Backend
-cd backend
-npm run dev
-
-# Terminal 2 - Frontend
-cd frontend
-npm start
-```
-
-## Project Structure
-
-```
-hebrew-transcription-app/
-├── frontend/          # React.js application
-├── backend/           # Express.js API server
-├── models/            # Custom vocabulary and language models
-├── docker/            # Containerization files
-├── docs/              # Documentation and API specs
-├── tests/             # Automated test suites
-└── deployment/        # CI/CD and infrastructure as code
-```
-
-## Contributing
-
-Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+For detailed instructions, see [INTEGRATION.md](../INTEGRATION.md) in the main repository.

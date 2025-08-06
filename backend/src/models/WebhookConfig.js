@@ -104,7 +104,7 @@ const WebhookConfig = sequelize.define('WebhookConfig', {
 
 // Instance methods
 WebhookConfig.prototype.getSuccessRate = function() {
-  if (this.totalTriggers === 0) return 0;
+  if (this.totalTriggers === 0) {return 0;}
   return (this.totalSuccesses / this.totalTriggers) * 100;
 };
 

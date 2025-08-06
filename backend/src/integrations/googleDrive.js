@@ -201,20 +201,20 @@ class GoogleDriveIntegration extends BaseIntegration {
    * Format transcription content for file export
    */
   formatTranscriptionContent(transcription) {
-    let content = `Hebrew Transcription Results\n`;
+    let content = 'Hebrew Transcription Results\n';
     content += `${'='.repeat(40)}\n\n`;
     content += `File: ${transcription.originalFilename}\n`;
     content += `Duration: ${transcription.duration ? Math.round(transcription.duration / 60) : 'Unknown'} minutes\n`;
-    content += `Language: Hebrew\n`;
+    content += 'Language: Hebrew\n';
     content += `Confidence: ${transcription.confidence ? Math.round(transcription.confidence * 100) : 'N/A'}%\n`;
     content += `Processed: ${new Date(transcription.createdAt).toLocaleString()}\n\n`;
     
-    content += `Transcription:\n`;
+    content += 'Transcription:\n';
     content += `${'-'.repeat(20)}\n`;
     content += `${transcription.transcriptionText || 'No transcription available'}\n\n`;
 
     if (transcription.speakerLabels && transcription.speakerLabels.length > 0) {
-      content += `Speaker Labels:\n`;
+      content += 'Speaker Labels:\n';
       content += `${'-'.repeat(20)}\n`;
       transcription.speakerLabels.forEach(speaker => {
         const startTime = this.formatTime(speaker.start);
@@ -225,7 +225,7 @@ class GoogleDriveIntegration extends BaseIntegration {
     }
 
     if (transcription.lowConfidenceWords && transcription.lowConfidenceWords.length > 0) {
-      content += `Low Confidence Words:\n`;
+      content += 'Low Confidence Words:\n';
       content += `${'-'.repeat(20)}\n`;
       transcription.lowConfidenceWords.forEach(word => {
         const confidence = Math.round(word.confidence * 100);
@@ -336,7 +336,7 @@ class GoogleDriveIntegration extends BaseIntegration {
     try {
       const query = this.folderId 
         ? `'${this.folderId}' in parents and trashed=false`
-        : "name contains 'transcription' and trashed=false";
+        : 'name contains \'transcription\' and trashed=false';
 
       const response = await this.drive.files.list({
         q: query,

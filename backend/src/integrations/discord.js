@@ -105,7 +105,7 @@ class DiscordIntegration extends BaseIntegration {
         messageId: response.data?.id || null
       };
     } catch (error) {
-      logger.error(`Failed to send Discord notification:`, error);
+      logger.error('Failed to send Discord notification:', error);
       throw error;
     }
   }
@@ -227,7 +227,7 @@ class DiscordIntegration extends BaseIntegration {
         messageId: response.data?.id || null
       };
     } catch (error) {
-      logger.error(`Failed to send custom Discord message:`, error);
+      logger.error('Failed to send custom Discord message:', error);
       throw error;
     }
   }
@@ -259,7 +259,7 @@ class DiscordIntegration extends BaseIntegration {
         messageId: response.data?.id || null
       };
     } catch (error) {
-      logger.error(`Failed to send Discord embed message:`, error);
+      logger.error('Failed to send Discord embed message:', error);
       throw error;
     }
   }
@@ -330,7 +330,7 @@ class DiscordIntegration extends BaseIntegration {
         messageId: response.data?.id || null
       };
     } catch (error) {
-      logger.error(`Failed to send Discord batch notification:`, error);
+      logger.error('Failed to send Discord batch notification:', error);
       throw error;
     }
   }
@@ -422,7 +422,7 @@ class DiscordIntegration extends BaseIntegration {
         messageId: response.data?.id || null
       };
     } catch (error) {
-      logger.error(`Failed to send Discord workflow notification:`, error);
+      logger.error('Failed to send Discord workflow notification:', error);
       throw error;
     }
   }

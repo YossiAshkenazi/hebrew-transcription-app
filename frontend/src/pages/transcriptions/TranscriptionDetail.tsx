@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Typography,
@@ -41,13 +41,7 @@ const TranscriptionDetail: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string>('');
 
-  useEffect(() => {
-    if (id) {
-      loadTranscription();
-    }
-  }, [id]);
-
-  const loadTranscription = async () => {
+  const loadTranscription = useCallback(async () => {
     if (!id) return;
 
     try {
@@ -63,7 +57,13 @@ const TranscriptionDetail: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      loadTranscription();
+    }
+  }, [id, loadTranscription]);
 
   const handleCancelTranscription = async () => {
     if (!transcription) return;

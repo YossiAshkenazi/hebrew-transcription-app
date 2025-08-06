@@ -193,7 +193,7 @@ const User = sequelize.define('User', {
 
 // Instance methods
 User.prototype.validatePassword = async function(password) {
-  if (!this.password) return false;
+  if (!this.password) {return false;}
   return bcrypt.compare(password, this.password);
 };
 
@@ -303,23 +303,23 @@ User.prototype.updateRiskScore = async function(factors = []) {
   // Calculate risk based on various factors
   factors.forEach(factor => {
     switch (factor.type) {
-      case 'failed_login':
-        score += Math.min(factor.count * 5, 25);
-        break;
-      case 'unusual_location':
-        score += 15;
-        break;
-      case 'suspicious_activity':
-        score += 20;
-        break;
-      case 'weak_password':
-        score += 10;
-        break;
-      case 'no_mfa':
-        score += 10;
-        break;
-      default:
-        score += factor.score || 0;
+    case 'failed_login':
+      score += Math.min(factor.count * 5, 25);
+      break;
+    case 'unusual_location':
+      score += 15;
+      break;
+    case 'suspicious_activity':
+      score += 20;
+      break;
+    case 'weak_password':
+      score += 10;
+      break;
+    case 'no_mfa':
+      score += 10;
+      break;
+    default:
+      score += factor.score || 0;
     }
   });
   
@@ -390,14 +390,14 @@ User.prototype.hasConsent = function(type) {
   const privacy = this.privacySettings || {};
   
   switch (type) {
-    case 'data_processing':
-      return privacy.allowDataProcessing === true;
-    case 'analytics':
-      return privacy.allowAnalytics === true;
-    case 'marketing':
-      return privacy.allowMarketing === true;
-    default:
-      return false;
+  case 'data_processing':
+    return privacy.allowDataProcessing === true;
+  case 'analytics':
+    return privacy.allowAnalytics === true;
+  case 'marketing':
+    return privacy.allowMarketing === true;
+  default:
+    return false;
   }
 };
 

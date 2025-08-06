@@ -228,7 +228,7 @@ ${transcription.transcriptionText}
   }
 
   formatSpeakerSections(speakerLabels) {
-    if (!speakerLabels || speakerLabels.length === 0) return null;
+    if (!speakerLabels || speakerLabels.length === 0) {return null;}
     
     return speakerLabels.map(segment => `
       <div class="speaker">
@@ -239,14 +239,14 @@ ${transcription.transcriptionText}
   }
 
   formatDuration(seconds) {
-    if (!seconds) return 'Unknown';
+    if (!seconds) {return 'Unknown';}
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   }
 
   formatProcessingTime(milliseconds) {
-    if (!milliseconds) return 'Unknown';
+    if (!milliseconds) {return 'Unknown';}
     const seconds = Math.floor(milliseconds / 1000);
     return `${seconds} seconds`;
   }

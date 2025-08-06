@@ -15,7 +15,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link as RouterLink, useSearchParams, useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../../contexts/AuthContext';
 import apiService from '../../services/api';
 
 const schema = yup.object({

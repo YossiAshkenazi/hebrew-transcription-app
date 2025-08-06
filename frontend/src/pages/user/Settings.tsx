@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Typography,
   Box,
   Card,
   CardContent,
-  TextField,
   Button,
   Grid,
   Alert,
@@ -22,7 +21,6 @@ import { Save as SaveIcon } from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { useAuth } from '../../contexts/AuthContext';
 import apiService from '../../services/api';
 
 interface SettingsFormData {
@@ -44,13 +42,12 @@ interface SettingsFormData {
 }
 
 const Settings: React.FC = () => {
-  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
 
-  const { control, handleSubmit, reset, watch } = useForm<SettingsFormData>({
+  const { control, handleSubmit, reset } = useForm<SettingsFormData>({
     defaultValues: {
       transcription: {
         defaultLanguage: 'he-IL',
@@ -70,11 +67,7 @@ const Settings: React.FC = () => {
     },
   });
 
-  useEffect(() => {
-    loadSettings();
-  }, []);
-
-  const loadSettings = async () => {
+  const loadSettings = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await apiService.getUserSettings();
@@ -105,7 +98,11 @@ const Settings: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [reset]);
+
+  useEffect(() => {
+    loadSettings();
+  }, [loadSettings]);
 
   const onSubmit = async (data: SettingsFormData) => {
     try {

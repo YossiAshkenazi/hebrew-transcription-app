@@ -2,19 +2,23 @@
 # /// script
 # requires-python = ">=3.8"
 # dependencies = [
-#     "openai",
 #     "python-dotenv",
 # ]
 # ///
 
 import os
 import sys
+import json
+import urllib.request
+import urllib.error
 from dotenv import load_dotenv
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from server_discovery import get_api_endpoint
 
 
 def prompt_llm(prompt_text):
     """
-    Base OpenAI LLM prompting method using fastest model.
+    Base OpenAI LLM prompting method using centralized server.
 
     Args:
         prompt_text (str): The prompt to send to the model
@@ -24,24 +28,41 @@ def prompt_llm(prompt_text):
     """
     load_dotenv()
 
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
+    # Auto-discover server URL with Docker fallback
+    api_url = get_api_endpoint('/api/llm/openai')
+    if not api_url:
         return None
-
+    
     try:
-        from openai import OpenAI
-
-        client = OpenAI(api_key=api_key)
-
-        response = client.chat.completions.create(
-            model="gpt-4.1-nano",  # Fastest OpenAI model
-            messages=[{"role": "user", "content": prompt_text}],
-            max_tokens=100,
-            temperature=0.7,
+        # Prepare request data for OpenAI API
+        request_data = {
+            "model": "gpt-4o-mini",  # Fastest OpenAI model
+            "messages": [{"role": "user", "content": prompt_text}],
+            "max_tokens": 100,
+            "temperature": 0.7
+        }
+        
+        # Send request to centralized server
+        req = urllib.request.Request(
+            api_url,
+            data=json.dumps(request_data).encode('utf-8'),
+            headers={
+                'Content-Type': 'application/json',
+                'User-Agent': 'Claude-Code-Hook/1.0'
+            }
         )
-
-        return response.choices[0].message.content.strip()
-
+        
+        with urllib.request.urlopen(req, timeout=30) as response:
+            result = json.loads(response.read().decode('utf-8'))
+            
+            if result.get('success') and result.get('data'):
+                choices = result['data'].get('choices', [])
+                if choices and len(choices) > 0:
+                    message = choices[0].get('message', {})
+                    return message.get('content', '').strip()
+            
+            return None
+            
     except Exception:
         return None
 

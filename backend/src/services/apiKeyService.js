@@ -240,9 +240,9 @@ class APIKeyService {
       const key = apiKeys[keyIndex];
       
       // Update allowed fields
-      if (updates.name) key.name = updates.name;
-      if (updates.permissions) key.permissions = updates.permissions;
-      if (updates.rateLimit) key.rateLimit = updates.rateLimit;
+      if (updates.name) {key.name = updates.name;}
+      if (updates.permissions) {key.permissions = updates.permissions;}
+      if (updates.rateLimit) {key.rateLimit = updates.rateLimit;}
       
       key.updatedAt = new Date().toISOString();
       
@@ -450,7 +450,7 @@ class APIKeyService {
       for (const user of users) {
         const apiKeys = user.apiKeys || [];
         const validKeys = apiKeys.filter(key => {
-          if (!key.expiresAt) return true;
+          if (!key.expiresAt) {return true;}
           
           const isExpired = new Date(key.expiresAt) < new Date();
           if (isExpired && key.active) {

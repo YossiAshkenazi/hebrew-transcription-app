@@ -33,7 +33,7 @@ const schema = yup.object({
 type FormData = yup.InferType<typeof schema>;
 
 const Profile: React.FC = () => {
-  const { user, updateUser, refreshUser } = useAuth();
+  const { user, updateUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');

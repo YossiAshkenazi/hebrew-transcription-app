@@ -11,24 +11,24 @@ class EmailProcessor {
       let result;
       
       switch (type) {
-        case 'transcription-complete':
-          result = await emailService.sendTranscriptionComplete(
-            data.to,
-            data.transcription,
-            data.attachments
-          );
-          break;
+      case 'transcription-complete':
+        result = await emailService.sendTranscriptionComplete(
+          data.to,
+          data.transcription,
+          data.attachments
+        );
+        break;
           
-        case 'transcription-error':
-          result = await emailService.sendTranscriptionError(
-            data.to,
-            data.transcription,
-            data.errorMessage
-          );
-          break;
+      case 'transcription-error':
+        result = await emailService.sendTranscriptionError(
+          data.to,
+          data.transcription,
+          data.errorMessage
+        );
+        break;
           
-        default:
-          throw new Error(`Unknown email type: ${type}`);
+      default:
+        throw new Error(`Unknown email type: ${type}`);
       }
       
       logger.info(`Email sent successfully: ${result.messageId}`);

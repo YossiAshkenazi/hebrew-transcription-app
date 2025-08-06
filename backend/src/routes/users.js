@@ -109,8 +109,8 @@ router.put('/profile', protect, [
       user.emailVerified = false; // Require re-verification
     }
 
-    if (firstName) user.firstName = firstName;
-    if (lastName) user.lastName = lastName;
+    if (firstName) {user.firstName = firstName;}
+    if (lastName) {user.lastName = lastName;}
 
     await user.save();
 

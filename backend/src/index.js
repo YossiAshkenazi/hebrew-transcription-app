@@ -89,10 +89,10 @@ async function startServer() {
     // Start server
     server.listen(PORT, () => {
       logger.info(`🚀 Server running on port ${PORT}`);
-      logger.info(`📝 Hebrew Transcription API ready`);
+      logger.info('📝 Hebrew Transcription API ready');
       logger.info(`🔗 Health check: http://localhost:${PORT}/health`);
-      logger.info(`⚡ WebSocket real-time features enabled`);
-      logger.info(`🎯 Advanced integrations and workflows active`);
+      logger.info('⚡ WebSocket real-time features enabled');
+      logger.info('🎯 Advanced integrations and workflows active');
     });
   } catch (error) {
     logger.error('Failed to start server:', error);

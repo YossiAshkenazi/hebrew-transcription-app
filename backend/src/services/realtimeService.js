@@ -35,8 +35,8 @@ class RealtimeService {
   initialize(server) {
     this.io = new Server(server, {
       cors: {
-        origin: process.env.FRONTEND_URL || "http://localhost:3000",
-        methods: ["GET", "POST"],
+        origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+        methods: ['GET', 'POST'],
         credentials: true
       },
       transports: ['websocket', 'polling']
@@ -490,15 +490,15 @@ class RealtimeService {
     
     // Update document (simplified - in production, use operational transforms)
     switch (operation) {
-      case 'insert':
-        session.document = session.document.slice(0, position) + content + session.document.slice(position);
-        break;
-      case 'delete':
-        session.document = session.document.slice(0, position) + session.document.slice(position + content.length);
-        break;
-      case 'replace':
-        session.document = session.document.slice(0, position) + content + session.document.slice(position + data.length);
-        break;
+    case 'insert':
+      session.document = session.document.slice(0, position) + content + session.document.slice(position);
+      break;
+    case 'delete':
+      session.document = session.document.slice(0, position) + session.document.slice(position + content.length);
+      break;
+    case 'replace':
+      session.document = session.document.slice(0, position) + content + session.document.slice(position + data.length);
+      break;
     }
 
     // Broadcast change to other participants

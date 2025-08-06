@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Typography,
@@ -22,7 +22,6 @@ import {
 } from '@mui/material';
 import {
   Search as SearchIcon,
-  FilterList as FilterIcon,
   MoreVert as MoreIcon,
   Visibility as ViewIcon,
   Cancel as CancelIcon,
@@ -50,11 +49,7 @@ const TranscriptionList: React.FC = () => {
 
   const itemsPerPage = 10;
 
-  useEffect(() => {
-    loadTranscriptions();
-  }, [currentPage, statusFilter]);
-
-  const loadTranscriptions = async () => {
+  const loadTranscriptions = useCallback(async () => {
     try {
       setIsLoading(true);
       const params: any = {
@@ -80,7 +75,11 @@ const TranscriptionList: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentPage, statusFilter]);
+
+  useEffect(() => {
+    loadTranscriptions();
+  }, [loadTranscriptions]);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, transcription: Transcription) => {
     setAnchorEl(event.currentTarget);

@@ -46,17 +46,17 @@ class GDPRService {
       // Generate export based on format
       let exportFile;
       switch (format.toLowerCase()) {
-        case 'json':
-          exportFile = await this.exportAsJSON(userData, exportDir, exportId);
-          break;
-        case 'csv':
-          exportFile = await this.exportAsCSV(userData, exportDir, exportId);
-          break;
-        case 'xml':
-          exportFile = await this.exportAsXML(userData, exportDir, exportId);
-          break;
-        default:
-          throw new Error('Unsupported export format');
+      case 'json':
+        exportFile = await this.exportAsJSON(userData, exportDir, exportId);
+        break;
+      case 'csv':
+        exportFile = await this.exportAsCSV(userData, exportDir, exportId);
+        break;
+      case 'xml':
+        exportFile = await this.exportAsXML(userData, exportDir, exportId);
+        break;
+      default:
+        throw new Error('Unsupported export format');
       }
 
       // Log the export
@@ -213,7 +213,7 @@ class GDPRService {
 
   // Sanitize security settings for export (remove sensitive data)
   sanitizeSecuritySettings(securitySettings) {
-    if (!securitySettings) return {};
+    if (!securitySettings) {return {};}
 
     const sanitized = { ...securitySettings };
     
@@ -347,14 +347,14 @@ class GDPRService {
 
   // Convert array of objects to CSV
   convertToCSV(data) {
-    if (!data || data.length === 0) return '';
+    if (!data || data.length === 0) {return '';}
     
     const headers = Object.keys(data[0]);
     const rows = data.map(row => 
       headers.map(header => {
         const value = row[header];
-        if (value === null || value === undefined) return '';
-        if (typeof value === 'object') return JSON.stringify(value);
+        if (value === null || value === undefined) {return '';}
+        if (typeof value === 'object') {return JSON.stringify(value);}
         return String(value).replace(/"/g, '""');
       }).map(field => `"${field}"`).join(',')
     );
@@ -365,15 +365,15 @@ class GDPRService {
   // Convert data to XML
   convertToXML(data, rootElement = 'gdpr-export') {
     const escapeXml = (str) => {
-      if (typeof str !== 'string') str = String(str);
+      if (typeof str !== 'string') {str = String(str);}
       return str.replace(/[<>&'"]/g, (c) => {
         switch (c) {
-          case '<': return '&lt;';
-          case '>': return '&gt;';
-          case '&': return '&amp;';
-          case "'": return '&apos;';
-          case '"': return '&quot;';
-          default: return c;
+        case '<': return '&lt;';
+        case '>': return '&gt;';
+        case '&': return '&amp;';
+        case '\'': return '&apos;';
+        case '"': return '&quot;';
+        default: return c;
         }
       });
     };

@@ -562,22 +562,22 @@ router.post('/validate',
 
         // Step-specific validation
         switch (step.type) {
-          case 'transcribe':
-            if (!step.config?.filePath) {
-              validationResult.warnings.push(`Step ${index + 1}: File path not specified`);
-            }
-            break;
-          case 'webhook':
-            if (!step.config?.webhookConfig?.url) {
-              validationResult.errors.push(`Step ${index + 1}: Webhook URL is required`);
-              validationResult.isValid = false;
-            }
-            break;
-          case 'export':
-            if (!step.config?.format) {
-              validationResult.warnings.push(`Step ${index + 1}: Export format not specified`);
-            }
-            break;
+        case 'transcribe':
+          if (!step.config?.filePath) {
+            validationResult.warnings.push(`Step ${index + 1}: File path not specified`);
+          }
+          break;
+        case 'webhook':
+          if (!step.config?.webhookConfig?.url) {
+            validationResult.errors.push(`Step ${index + 1}: Webhook URL is required`);
+            validationResult.isValid = false;
+          }
+          break;
+        case 'export':
+          if (!step.config?.format) {
+            validationResult.warnings.push(`Step ${index + 1}: Export format not specified`);
+          }
+          break;
         }
       });
 
@@ -634,40 +634,40 @@ router.post('/import',
       let workflowDefinition;
 
       switch (source) {
-        case 'template':
-          const templates = workflowService.getWorkflowTemplates();
-          if (!templates[data]) {
-            return res.status(400).json({
-              success: false,
-              error: 'Template not found'
-            });
-          }
-          workflowDefinition = { ...templates[data] };
-          break;
-
-        case 'json':
-          try {
-            workflowDefinition = typeof data === 'string' ? JSON.parse(data) : data;
-          } catch (parseError) {
-            return res.status(400).json({
-              success: false,
-              error: 'Invalid JSON format'
-            });
-          }
-          break;
-
-        case 'file':
-          // In production, this would handle file upload and parsing
-          return res.status(501).json({
-            success: false,
-            error: 'File import not yet implemented'
-          });
-
-        default:
+      case 'template':
+        const templates = workflowService.getWorkflowTemplates();
+        if (!templates[data]) {
           return res.status(400).json({
             success: false,
-            error: 'Invalid import source'
+            error: 'Template not found'
           });
+        }
+        workflowDefinition = { ...templates[data] };
+        break;
+
+      case 'json':
+        try {
+          workflowDefinition = typeof data === 'string' ? JSON.parse(data) : data;
+        } catch (parseError) {
+          return res.status(400).json({
+            success: false,
+            error: 'Invalid JSON format'
+          });
+        }
+        break;
+
+      case 'file':
+        // In production, this would handle file upload and parsing
+        return res.status(501).json({
+          success: false,
+          error: 'File import not yet implemented'
+        });
+
+      default:
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid import source'
+        });
       }
 
       // Customize name if provided
@@ -733,15 +733,15 @@ function estimateExecutionTime(definition) {
   // Add time for specific step types
   definition.steps.forEach(step => {
     switch (step.type) {
-      case 'transcribe':
-        totalEstimate += 120; // 2 minutes for transcription
-        break;
-      case 'batch_process':
-        totalEstimate += 300; // 5 minutes for batch processing
-        break;
-      case 'export':
-        totalEstimate += 15; // 15 seconds for export
-        break;
+    case 'transcribe':
+      totalEstimate += 120; // 2 minutes for transcription
+      break;
+    case 'batch_process':
+      totalEstimate += 300; // 5 minutes for batch processing
+      break;
+    case 'export':
+      totalEstimate += 15; // 15 seconds for export
+      break;
     }
   });
 

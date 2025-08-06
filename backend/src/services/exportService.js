@@ -51,43 +51,43 @@ class ExportService {
       // Generate export based on format
       let result;
       switch (format.toLowerCase()) {
-        case 'txt':
-          result = await this.exportToText(exportData, options);
-          break;
-        case 'json':
-          result = await this.exportToJson(exportData, options);
-          break;
-        case 'csv':
-          result = await this.exportToCsv(exportData, options);
-          break;
-        case 'xml':
-          result = await this.exportToXml(exportData, options);
-          break;
-        case 'pdf':
-          result = await this.exportToPdf(exportData, options);
-          break;
-        case 'docx':
-          result = await this.exportToDocx(exportData, options);
-          break;
-        case 'srt':
-          result = await this.exportToSrt(exportData, options);
-          break;
-        case 'vtt':
-          result = await this.exportToVtt(exportData, options);
-          break;
-        case 'html':
-          result = await this.exportToHtml(exportData, options);
-          break;
-        case 'markdown':
-          result = await this.exportToMarkdown(exportData, options);
-          break;
-        default:
-          // Check custom formats
-          if (this.customFormats.has(format)) {
-            result = await this.exportToCustomFormat(exportData, format, options);
-          } else {
-            throw new Error(`Export format not implemented: ${format}`);
-          }
+      case 'txt':
+        result = await this.exportToText(exportData, options);
+        break;
+      case 'json':
+        result = await this.exportToJson(exportData, options);
+        break;
+      case 'csv':
+        result = await this.exportToCsv(exportData, options);
+        break;
+      case 'xml':
+        result = await this.exportToXml(exportData, options);
+        break;
+      case 'pdf':
+        result = await this.exportToPdf(exportData, options);
+        break;
+      case 'docx':
+        result = await this.exportToDocx(exportData, options);
+        break;
+      case 'srt':
+        result = await this.exportToSrt(exportData, options);
+        break;
+      case 'vtt':
+        result = await this.exportToVtt(exportData, options);
+        break;
+      case 'html':
+        result = await this.exportToHtml(exportData, options);
+        break;
+      case 'markdown':
+        result = await this.exportToMarkdown(exportData, options);
+        break;
+      default:
+        // Check custom formats
+        if (this.customFormats.has(format)) {
+          result = await this.exportToCustomFormat(exportData, format, options);
+        } else {
+          throw new Error(`Export format not implemented: ${format}`);
+        }
       }
 
       const duration = Date.now() - startTime;
@@ -190,17 +190,17 @@ class ExportService {
     let content = '';
 
     switch (template) {
-      case 'detailed':
-        content = this.generateDetailedTextContent(data);
-        break;
-      case 'simple':
-        content = data.transcriptionText || 'No transcription available';
-        break;
-      case 'speakers':
-        content = this.generateSpeakerBasedTextContent(data);
-        break;
-      default:
-        content = this.generateBasicTextContent(data);
+    case 'detailed':
+      content = this.generateDetailedTextContent(data);
+      break;
+    case 'simple':
+      content = data.transcriptionText || 'No transcription available';
+      break;
+    case 'speakers':
+      content = this.generateSpeakerBasedTextContent(data);
+      break;
+    default:
+      content = this.generateBasicTextContent(data);
     }
 
     return await this.writeToFile(content, 'txt', options);
@@ -332,12 +332,12 @@ class ExportService {
 
         // Metadata
         doc.fontSize(12)
-           .text(`File: ${data.originalFilename}`)
-           .text(`Language: ${data.language}`)
-           .text(`Confidence: ${Math.round((data.confidence || 0) * 100)}%`)
-           .text(`Duration: ${this.formatDuration(data.duration)}`)
-           .text(`Created: ${moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')}`)
-           .moveDown();
+          .text(`File: ${data.originalFilename}`)
+          .text(`Language: ${data.language}`)
+          .text(`Confidence: ${Math.round((data.confidence || 0) * 100)}%`)
+          .text(`Duration: ${this.formatDuration(data.duration)}`)
+          .text(`Created: ${moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')}`)
+          .moveDown();
 
         // Transcription content
         doc.fontSize(14).text('Transcription:', { underline: true });
@@ -355,9 +355,9 @@ class ExportService {
 
           data.speakerLabels.forEach(segment => {
             doc.fontSize(11)
-               .text(`${segment.speaker} [${this.formatTime(segment.start)} - ${this.formatTime(segment.end)}]:`)
-               .text(segment.text, { indent: 20 })
-               .moveDown(0.5);
+              .text(`${segment.speaker} [${this.formatTime(segment.start)} - ${this.formatTime(segment.end)}]:`)
+              .text(segment.text, { indent: 20 })
+              .moveDown(0.5);
           });
         }
 
@@ -613,10 +613,10 @@ class ExportService {
    * Export to Markdown format
    */
   async exportToMarkdown(data, options = {}) {
-    let content = `# Hebrew Transcription Report\n\n`;
+    let content = '# Hebrew Transcription Report\n\n';
     
     // Metadata
-    content += `## File Information\n\n`;
+    content += '## File Information\n\n';
     content += `- **File:** ${data.originalFilename}\n`;
     content += `- **Language:** ${data.language}\n`;
     content += `- **Confidence:** ${Math.round((data.confidence || 0) * 100)}%\n`;
@@ -625,14 +625,14 @@ class ExportService {
 
     // Transcription content
     if (data.speakerLabels && data.speakerLabels.length > 0) {
-      content += `## Speaker Segments\n\n`;
+      content += '## Speaker Segments\n\n';
       
       data.speakerLabels.forEach(segment => {
         content += `### ${segment.speaker} [${this.formatTime(segment.start)} - ${this.formatTime(segment.end)}]\n\n`;
         content += `${segment.text}\n\n`;
       });
     } else {
-      content += `## Transcription\n\n`;
+      content += '## Transcription\n\n';
       content += `${data.transcriptionText || 'No transcription available'}\n\n`;
     }
 
@@ -811,14 +811,14 @@ class ExportService {
    * Helper methods for content generation
    */
   generateBasicTextContent(data) {
-    let content = `Hebrew Transcription Report\n`;
+    let content = 'Hebrew Transcription Report\n';
     content += `${'='.repeat(40)}\n\n`;
     content += `File: ${data.originalFilename}\n`;
     content += `Language: ${data.language}\n`;
     content += `Confidence: ${Math.round((data.confidence || 0) * 100)}%\n`;
     content += `Duration: ${this.formatDuration(data.duration)}\n`;
     content += `Created: ${moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')}\n\n`;
-    content += `Transcription:\n`;
+    content += 'Transcription:\n';
     content += `${'-'.repeat(20)}\n`;
     content += `${data.transcriptionText || 'No transcription available'}\n`;
     return content;
@@ -828,7 +828,7 @@ class ExportService {
     let content = this.generateBasicTextContent(data);
     
     if (data.speakerLabels && data.speakerLabels.length > 0) {
-      content += `\n\nSpeaker Segments:\n`;
+      content += '\n\nSpeaker Segments:\n';
       content += `${'-'.repeat(20)}\n`;
       data.speakerLabels.forEach(segment => {
         content += `[${this.formatTime(segment.start)} - ${this.formatTime(segment.end)}] ${segment.speaker}: ${segment.text}\n`;
@@ -836,7 +836,7 @@ class ExportService {
     }
 
     if (data.lowConfidenceWords && data.lowConfidenceWords.length > 0) {
-      content += `\n\nLow Confidence Words:\n`;
+      content += '\n\nLow Confidence Words:\n';
       content += `${'-'.repeat(20)}\n`;
       data.lowConfidenceWords.forEach(word => {
         content += `${word.word} (${Math.round(word.confidence * 100)}%)\n`;
@@ -851,7 +851,7 @@ class ExportService {
       return this.generateBasicTextContent(data);
     }
 
-    let content = `Hebrew Transcription Report - Speaker View\n`;
+    let content = 'Hebrew Transcription Report - Speaker View\n';
     content += `${'='.repeat(50)}\n\n`;
     content += `File: ${data.originalFilename}\n`;
     content += `Speakers: ${data.speakerCount}\n`;
@@ -868,7 +868,7 @@ class ExportService {
    * Helper methods for formatting
    */
   formatDuration(seconds) {
-    if (!seconds) return 'Unknown';
+    if (!seconds) {return 'Unknown';}
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = Math.floor(seconds % 60);
@@ -908,20 +908,20 @@ class ExportService {
    * Hebrew-specific helper methods
    */
   countHebrewCharacters(text) {
-    if (!text) return 0;
+    if (!text) {return 0;}
     const hebrewRegex = /[\u0590-\u05FF]/g;
     const matches = text.match(hebrewRegex);
     return matches ? matches.length : 0;
   }
 
   countHebrewWords(text) {
-    if (!text) return 0;
+    if (!text) {return 0;}
     const hebrewWords = text.split(/\s+/).filter(word => /[\u0590-\u05FF]/.test(word));
     return hebrewWords.length;
   }
 
   countHebrewSentences(text) {
-    if (!text) return 0;
+    if (!text) {return 0;}
     const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
     return sentences.length;
   }

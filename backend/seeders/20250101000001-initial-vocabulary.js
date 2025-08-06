@@ -84,7 +84,7 @@ module.exports = {
       addedBy: null,
       approvedBy: null,
       approvedAt: now,
-      metadata: {},
+      metadata: JSON.stringify({}),
       createdAt: now,
       updatedAt: now
     }));

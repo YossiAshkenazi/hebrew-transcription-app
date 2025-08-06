@@ -134,25 +134,25 @@ class AdvancedWebhookService {
    */
   addAuthentication(requestConfig, webhookConfig) {
     switch (webhookConfig.authType) {
-      case 'bearer':
-        requestConfig.headers.Authorization = `Bearer ${webhookConfig.authToken}`;
-        break;
-      case 'basic':
-        const credentials = Buffer.from(`${webhookConfig.authUsername}:${webhookConfig.authPassword}`).toString('base64');
-        requestConfig.headers.Authorization = `Basic ${credentials}`;
-        break;
-      case 'api_key':
-        if (webhookConfig.authHeaderName) {
-          requestConfig.headers[webhookConfig.authHeaderName] = webhookConfig.authToken;
-        } else {
-          requestConfig.headers['X-API-Key'] = webhookConfig.authToken;
-        }
-        break;
-      case 'custom':
-        if (webhookConfig.customHeaders) {
-          Object.assign(requestConfig.headers, webhookConfig.customHeaders);
-        }
-        break;
+    case 'bearer':
+      requestConfig.headers.Authorization = `Bearer ${webhookConfig.authToken}`;
+      break;
+    case 'basic':
+      const credentials = Buffer.from(`${webhookConfig.authUsername}:${webhookConfig.authPassword}`).toString('base64');
+      requestConfig.headers.Authorization = `Basic ${credentials}`;
+      break;
+    case 'api_key':
+      if (webhookConfig.authHeaderName) {
+        requestConfig.headers[webhookConfig.authHeaderName] = webhookConfig.authToken;
+      } else {
+        requestConfig.headers['X-API-Key'] = webhookConfig.authToken;
+      }
+      break;
+    case 'custom':
+      if (webhookConfig.customHeaders) {
+        Object.assign(requestConfig.headers, webhookConfig.customHeaders);
+      }
+      break;
     }
   }
 
@@ -198,33 +198,33 @@ class AdvancedWebhookService {
     const fieldValue = this.getNestedValue(payload, field);
 
     switch (operator) {
-      case 'equals':
-        return fieldValue === value;
-      case 'not_equals':
-        return fieldValue !== value;
-      case 'contains':
-        return typeof fieldValue === 'string' && fieldValue.includes(value);
-      case 'not_contains':
-        return typeof fieldValue === 'string' && !fieldValue.includes(value);
-      case 'greater_than':
-        return Number(fieldValue) > Number(value);
-      case 'less_than':
-        return Number(fieldValue) < Number(value);
-      case 'exists':
-        return fieldValue !== undefined && fieldValue !== null;
-      case 'not_exists':
-        return fieldValue === undefined || fieldValue === null;
-      case 'regex':
-        try {
-          const regex = new RegExp(value);
-          return regex.test(String(fieldValue));
-        } catch (error) {
-          logger.warn(`Invalid regex in webhook condition: ${value}`);
-          return false;
-        }
-      default:
-        logger.warn(`Unknown condition operator: ${operator}`);
-        return true;
+    case 'equals':
+      return fieldValue === value;
+    case 'not_equals':
+      return fieldValue !== value;
+    case 'contains':
+      return typeof fieldValue === 'string' && fieldValue.includes(value);
+    case 'not_contains':
+      return typeof fieldValue === 'string' && !fieldValue.includes(value);
+    case 'greater_than':
+      return Number(fieldValue) > Number(value);
+    case 'less_than':
+      return Number(fieldValue) < Number(value);
+    case 'exists':
+      return fieldValue !== undefined && fieldValue !== null;
+    case 'not_exists':
+      return fieldValue === undefined || fieldValue === null;
+    case 'regex':
+      try {
+        const regex = new RegExp(value);
+        return regex.test(String(fieldValue));
+      } catch (error) {
+        logger.warn(`Invalid regex in webhook condition: ${value}`);
+        return false;
+      }
+    default:
+      logger.warn(`Unknown condition operator: ${operator}`);
+      return true;
     }
   }
 
@@ -459,18 +459,18 @@ class AdvancedWebhookService {
   getCutoffTime(timeRange) {
     const now = new Date();
     switch (timeRange) {
-      case '1h':
-        return new Date(now.getTime() - 60 * 60 * 1000);
-      case '6h':
-        return new Date(now.getTime() - 6 * 60 * 60 * 1000);
-      case '24h':
-        return new Date(now.getTime() - 24 * 60 * 60 * 1000);
-      case '7d':
-        return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-      case '30d':
-        return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-      default:
-        return new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    case '1h':
+      return new Date(now.getTime() - 60 * 60 * 1000);
+    case '6h':
+      return new Date(now.getTime() - 6 * 60 * 60 * 1000);
+    case '24h':
+      return new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    case '7d':
+      return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    case '30d':
+      return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    default:
+      return new Date(now.getTime() - 24 * 60 * 60 * 1000);
     }
   }
 

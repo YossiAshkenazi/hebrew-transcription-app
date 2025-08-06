@@ -129,17 +129,17 @@ const securityConfig = {
   headers: {
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        imgSrc: ["'self'", "data:", "https:"],
-        scriptSrc: ["'self'"],
-        connectSrc: ["'self'", "https://api.openai.com"],
-        mediaSrc: ["'self'", "blob:"],
-        objectSrc: ["'none'"],
-        baseUri: ["'self'"],
-        frameAncestors: ["'none'"],
-        formAction: ["'self'"]
+        defaultSrc: ['\'self\''],
+        styleSrc: ['\'self\'', '\'unsafe-inline\'', 'https://fonts.googleapis.com'],
+        fontSrc: ['\'self\'', 'https://fonts.gstatic.com'],
+        imgSrc: ['\'self\'', 'data:', 'https:'],
+        scriptSrc: ['\'self\''],
+        connectSrc: ['\'self\'', 'https://api.openai.com'],
+        mediaSrc: ['\'self\'', 'blob:'],
+        objectSrc: ['\'none\''],
+        baseUri: ['\'self\''],
+        frameAncestors: ['\'none\''],
+        formAction: ['\'self\'']
       }
     },
     hsts: {
@@ -291,7 +291,7 @@ if (securityConfig.environments[env]) {
   function deepMerge(target, source) {
     for (const key in source) {
       if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
-        if (!target[key]) target[key] = {};
+        if (!target[key]) {target[key] = {};}
         deepMerge(target[key], source[key]);
       } else {
         target[key] = source[key];
